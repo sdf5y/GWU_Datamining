@@ -45,3 +45,5 @@ sns.heatmap(sample_df_corr.corr(), annot=True, cmap="coolwarm", fmt=".2f")
 
 #%%
 
+#RECs_dfs.to_csv('RECsample_df.csv')
+
