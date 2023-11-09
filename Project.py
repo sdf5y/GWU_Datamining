@@ -206,30 +206,69 @@ money_order = ['Less than $5,000', '$5,000 - $7,499', '$7,500 - $9,999', '$10,00
                '$40,000 - $49,999', '$50,000 - $59,999', '$60,000 - $74,999', '$75,000 - $99,999', '$100,000 - $149,999',
                '$150,000 or more']
 
-assistance_order = ['Yes', 'No', 'NA']
+assistance_order = ['Yes']
 
+filtered_df = RECs_dfs[RECs_dfs['COLDMA'] == 'Yes']
 plt.figure(figsize=(12, 6))
-sns.countplot(data=RECs_dfs, x="MONEYPY", hue='COLDMA', palette="Set2", order = money_order, hue_order = assistance_order)
+sns.countplot(data=filtered_df , x="MONEYPY", hue='COLDMA',  order=money_order, hue_order=assistance_order, alpha=0.6)
 plt.xlabel("Income Level")
 plt.ylabel("Count")
-plt.title("Income Level by Cold Medical Attention Needed")
+plt.title("Medical Attention Needed From Cold by Income")
 plt.xticks(rotation=30, ha='right')
-plt.legend(title="Medical Attention Needed for Cold", labels= assistance_order )
+plt.legend(title="Medical Attention for Cold", labels= assistance_order )
+plt.show()
+
+filtered_df_hot = RECs_dfs[RECs_dfs['HOTMA'] == 'Yes']
+plt.figure(figsize=(12, 6))
+sns.countplot(data=filtered_df_hot , x="MONEYPY", hue='HOTMA',  order=money_order, hue_order=assistance_order, alpha=0.6, palette = 'autumn_r')
+plt.xlabel("Income Level")
+plt.ylabel("Count")
+plt.title("Medical Attention Needed From Heat by Income")
+plt.xticks(rotation=30, ha='right')
+plt.legend(title="Medical Attention for Heat", labels= assistance_order )
 plt.show()
 
 #%%
-money_order = ['Less than $5,000', '$5,000 - $7,499', '$7,500 - $9,999', '$10,000 - $12,499', '$12,500 - $14,999',
-               '$15,000 - $19,999', '$20,000 - $24,999', '$25,000 - $29,999', '$30,000 - $34,999', '$35,000 - $39,999',
-               '$40,000 - $49,999', '$50,000 - $59,999', '$60,000 - $74,999', '$75,000 - $99,999', '$100,000 - $149,999',
-               '$150,000 or more']
 
-assistance_order = ['Yes', 'No', 'NA']
+# Chi squared test for income braket and hotma and then coldma
 
-plt.figure(figsize=(12, 6))
-sns.countplot(data=RECs_dfs, x="MONEYPY", hue='HOTMA', palette="Set2", order = money_order, hue_order = assistance_order)
-plt.xlabel("Income Level")
-plt.ylabel("Count")
-plt.title("Income Level by Heat Medical Attention Needed")
-plt.xticks(rotation=30, ha='right')
-plt.legend(title="Medical Attention Needed for Heat", labels= assistance_order )
-plt.show()
+from scipy.stats import chi2_contingency
+
+table = pd.crosstab(RECs_dfs['MONEYPY'], RECs_dfs['HOTMA'])
+
+chi2, p, dof, expected = chi2_contingency(table)
+
+print("Chi-squared statistic:", chi2)
+print("Degrees of freedom:", dof)
+print("P-value:", p)
+
+table = pd.crosstab(RECs_dfs['MONEYPY'], RECs_dfs['COLDMA'])
+
+chi2, p, dof, expected = chi2_contingency(table)
+
+print("Chi-squared statistic:", chi2)
+print("Degrees of freedom:", dof)
+print("P-value:", p)
+
+#%%
+
+table = pd.crosstab(RECs_dfs['MONEYPY'], RECs_dfs['PAYHELP'])
+
+chi2, p, dof, expected = chi2_contingency(table)
+
+print("Chi-squared statistic:", chi2)
+print("Degrees of freedom:", dof)
+print("P-value:", p)
+
+#%%
+
+#!pip install statsmodels
+import statsmodels.api as sm
+from statsmodels.formula.api import glm
+
+data = RECs_dfs
+data = data[data['PAYHELP'] != 'NA']
+
+model = glm(formula='PAYHELP ~  HHAGE + C(MONEYPY) + C(HOTMA) + C(COLDMA) ', data=data, family=sm.families.Binomial())
+model_fit = model.fit()
+print(model_fit.summary())
