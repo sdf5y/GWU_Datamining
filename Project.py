@@ -18,16 +18,15 @@ import scipy.stats
 import copy
 !pip install scikit-learn
 
-'''
+
 #%%
 os.chdir("C:\\Users\\18045\\Documents\\Python\\datamining\\Project") #Sean's Directory
 #os.chdir() #Linsie's directory
 #os.chdir() #Sreya's directory
 RECS_DF = pd.read_csv("recs2020_public_v5.csv")
 code_book = pd.read_excel('RECS 2020 Codebook for Public File - v5.xlsx')
-
-Pulling the columns of interest. 
-
+'''
+#Pulling the columns of interest. 
 
 data_df = RECS_DF.iloc[:,:9]
 
@@ -91,7 +90,7 @@ confusion_matrix(y_test, y_pred)
 
 Now we'll assign our levels for each variable.
 """
-
+#%%
 #Map TYPEHUC Type factors
 mapping = {1: 'Mobile home',
            2: 'Single-family house detached from any other house',
@@ -171,7 +170,7 @@ mapping = {1: 'Less than $5,000',
            16: '$150,000 or more'}
 
 RECs_dfs['MONEYPY'] = RECs_dfs['MONEYPY'].map(mapping)
-
+#%%
 """Figures and other Plots."""
 
 #PLOT Income by Education
@@ -194,7 +193,7 @@ plt.title("Income Level by Education")
 plt.xticks(rotation=30, ha='right')
 plt.legend(title="Education", labels= edu_order)
 plt.show()
-
+#%%
 #EMPLOYHH by MONEYPY
 
 plt.figure(figsize=(12, 6))
@@ -207,7 +206,7 @@ plt.legend(title="Employment Status")
 plt.show()
 
 RECs_dfs_filtered = RECs_dfs[RECs_dfs['COLDMA'].isin(['Yes', 'No'])]
-
+#%%
 #PLOT Income by Assisstance
 money_order = ['Less than $5,000', '$5,000 - $7,499', '$7,500 - $9,999', '$10,000 - $12,499', '$12,500 - $14,999',
                '$15,000 - $19,999', '$20,000 - $24,999', '$25,000 - $29,999', '$30,000 - $34,999', '$35,000 - $39,999',
@@ -257,7 +256,7 @@ plt.title("Medical Attention Needed From Heat by Income")
 plt.xticks(rotation=30, ha='right')
 plt.legend(title="Medical Attention for Heat", labels= assistance_order )
 plt.show()
-
+#%%
 # Chi squared test for income braket and hotma and then coldma
 
 from scipy.stats import chi2_contingency
@@ -289,11 +288,11 @@ print("Degrees of freedom:", dof)
 print("P-value:", p)
 
 """Predictable results where PAYHELP is significant with income levels. Nothing too insightful here."""
-
-# Logistical Prediction from reg hw
+#%%
+# Logistical Prediction
 # test accuracy with prediction score
-
 #!pip install statsmodels
+
 import statsmodels.api as sm
 from statsmodels.formula.api import glm
 
@@ -310,58 +309,60 @@ confusion_matrix()
 RECs_dfs.columns
 
 
-#!pip install statsmodels
-import statsmodels.api as sm
-from statsmodels.formula.api import glm
+#%%
+'''
+Linear Regression of Income level by attributes of education and cold medical assistance.
 
-data = RECs_dfs
-data = data[data['PAYHELP'] != 'NA']
-
-model = glm(formula='PAYHELP ~  HHAGE + C(MONEYPY) + C(HOTMA) + C(COLDMA) ', data=data, family=sm.families.Binomial())
-model_fit = model.fit()
-print(model_fit.summary())
-
-from sklearn.metrics import confusion_matrix
-confusion_matrix()
-
-RECs_dfs.columns
-
-
-
-
-#Linear Regression
+'''
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 
-# Selecting relevant columns based on the codebook
+#Selecting our columns, and making them dummies
 selected_columns = ['MONEYPY', 'HOUSEHOLDER_RACE', 'EDUCATION', 'COLDMA']
 
-# Extracting the relevant subset of the DataFrame
 df = RECS_DF[selected_columns]
 
-# Checking the data types and handling any necessary conversions
-df['MONEYPY'] = pd.to_numeric(df['MONEYPY'], errors='coerce')  # Assuming 'MONEYPY' is a numerical column
+df['MONEYPY'] = pd.to_numeric(df['MONEYPY'], errors='coerce')  
 
-# Handling categorical variables (assuming 'HOUSEHOLDER_RACE' and 'EDUCATION' are categorical)
 df = pd.get_dummies(df, columns=['HOUSEHOLDER_RACE', 'EDUCATION'], drop_first=True)
 
-# Handling missing values
+#remove NAs
 df.dropna(inplace=True)
 
-# Creating the feature matrix (X) and target variable (y)
+#Splitting the dataset for Y and Xs, then training and testing
 X = df.drop('COLDMA', axis=1).values
 y = df['COLDMA'].values
 
-# Splitting the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Initializing the linear regression model
 model = LinearRegression()
 
-# Training the model
 model.fit(X_train, y_train)
 
-# Making predictions on the test set
 y_pred = model.predict(X_test)
+
+#Results and performance of our data
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+colnames = pd.DataFrame(df.columns)
+coefs_df = pd.DataFrame(model.coef_)
+
+coefs_colname = pd.concat([colnames, coefs_df], axis = 1)
+coefs_colname.columns = ['Name', 'Coefficient'] 
+
+print(f'Mean Squared Error: {mse}')
+print(f'R-squared: {r2}')
+
+print(f'Here are our parameters:\n {coefs_colname}') 
+print(f'Here is our intercept: {model.intercept_}')
+'''
+Our linear regression X variables explain 1.02% of the Y variable(income) based on the r-squared value.
+So overall our regression should not be considered in our analysis.
+This is helpful to know since we can explore other models. 
+Despite this poor performance, we can gleam that lower education statuses correlate to lower incomes.
+'''
+#%%
+
 
