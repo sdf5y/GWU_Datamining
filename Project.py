@@ -18,12 +18,32 @@ import scipy.stats
 import copy
 !pip install scikit-learn
 
+'''
+#%%
+os.chdir("C:\\Users\\18045\\Documents\\Python\\datamining\\Project") #Sean's Directory
+#os.chdir() #Linsie's directory
+#os.chdir() #Sreya's directory
+RECS_DF = pd.read_csv("recs2020_public_v5.csv")
+code_book = pd.read_excel('RECS 2020 Codebook for Public File - v5.xlsx')
+
+Pulling the columns of interest. 
+
+
+data_df = RECS_DF.iloc[:,:9]
+
+column_names_list = ['TYPEHUQ', 'INTERNET', 'HHSEX', 'HHAGE', 'EMPLOYHH', 'EDUCATION',
+                     'HOUSEHOLDER_RACE', 'COLDMA', 'HOTMA', 'NOACEL','NOHEATEL', 'MONEYPY','PAYHELP']
+
+if all(col_name in RECS_DF.columns for col_name in column_names_list):
+    data = RECS_DF[column_names_list]
+    
+RECs_dfs = pd.concat([data_df, data], axis=1)
+'''
+#%%
+
 #import data (smaller sized csv of our key attributes only - see github for the code I used)
 #make sure to drag the csv file (in our drive) to the colab variable panel.
 RECs_dfs = pd.read_csv("RECsample_df.csv")
-
-from google.colab import drive
-drive.mount('/content/drive')
 
 '''
 Initial corr plot
@@ -288,3 +308,22 @@ from sklearn.metrics import confusion_matrix
 confusion_matrix()
 
 RECs_dfs.columns
+
+
+#!pip install statsmodels
+import statsmodels.api as sm
+from statsmodels.formula.api import glm
+
+data = RECs_dfs
+data = data[data['PAYHELP'] != 'NA']
+
+model = glm(formula='PAYHELP ~  HHAGE + C(MONEYPY) + C(HOTMA) + C(COLDMA) ', data=data, family=sm.families.Binomial())
+model_fit = model.fit()
+print(model_fit.summary())
+
+from sklearn.metrics import confusion_matrix
+confusion_matrix()
+
+RECs_dfs.columns
+
+
