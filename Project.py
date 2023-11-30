@@ -327,3 +327,21 @@ confusion_matrix()
 RECs_dfs.columns
 
 
+
+
+#Linear Regression
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Selecting relevant columns based on the codebook
+selected_columns = ['MONEYPY', 'HOUSEHOLDER_RACE', 'EDUCATION', 'COLDMA']
+
+# Extracting the relevant subset of the DataFrame
+df = RECS_DF[selected_columns]
+
+# Checking the data types and handling any necessary conversions
+df['MONEYPY'] = pd.to_numeric(df['MONEYPY'], errors='coerce')  # Assuming 'MONEYPY' is a numerical column
+
+# Handling categorical variables (assuming 'HOUSEHOLDER_RACE' and 'EDUCATION' are categorical)
+df = pd.get_dummies(df, columns=['HOUSEHOLDER_RACE', 'EDUCATION'], drop_first=True)
