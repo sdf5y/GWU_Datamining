@@ -345,3 +345,23 @@ df['MONEYPY'] = pd.to_numeric(df['MONEYPY'], errors='coerce')  # Assuming 'MONEY
 
 # Handling categorical variables (assuming 'HOUSEHOLDER_RACE' and 'EDUCATION' are categorical)
 df = pd.get_dummies(df, columns=['HOUSEHOLDER_RACE', 'EDUCATION'], drop_first=True)
+
+# Handling missing values
+df.dropna(inplace=True)
+
+# Creating the feature matrix (X) and target variable (y)
+X = df.drop('COLDMA', axis=1).values
+y = df['COLDMA'].values
+
+# Splitting the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initializing the linear regression model
+model = LinearRegression()
+
+# Training the model
+model.fit(X_train, y_train)
+
+# Making predictions on the test set
+y_pred = model.predict(X_test)
+
