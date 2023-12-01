@@ -371,9 +371,7 @@ Multilinear Regression
 
 '''
 
-import statsmodels.api as sm
-
-# Select relevant columns
+# Selecting our columns and subsetting the data.
 selected_columns = [
     'COLDMA',
     'MONEYPY',
@@ -385,9 +383,14 @@ selected_columns = [
     'HOUSEHOLDER_RACE'
 ]
 
-# Created a subset of the DataFrame with selected columns
-selected_data = RECS_DF[selected_columns].copy()  # Ensure a copy to avoid chained assignment
+
+selected_data = RECS_DF[selected_columns].copy()  # copying avoid chained assignment
 
 # Converting columns to numeric
 selected_data = selected_data.apply(pd.to_numeric, errors='coerce')
+
+selected_data = selected_data.dropna()
+
+print("Shape after dropping missing values:", selected_data.shape)
+
 
