@@ -363,7 +363,7 @@ So overall our regression should not be considered in our analysis.
 This is helpful to know since we can explore other models. 
 Despite this poor performance, we can gleam that lower education statuses correlate to lower incomes.
 '''
-#%%
+
 
 #%%
 '''
@@ -393,4 +393,12 @@ selected_data = selected_data.dropna()
 
 print("Shape after dropping missing values:", selected_data.shape)
 
+# Convert 'PAYHELP' column to categorical
+selected_data['PAYHELP'] = pd.Categorical(selected_data['PAYHELP'], categories=[-2, 0, 1])
+
+# Convert 'PAYHELP' to dummy variables
+selected_data = pd.get_dummies(selected_data, columns=['PAYHELP'], prefix='PAYHELP', drop_first=True)
+
+# Convert 'EDUCATION' to dummy variables
+selected_data = pd.get_dummies(selected_data, columns=['EDUCATION'], prefix='EDU', drop_first=True)
 
