@@ -383,7 +383,6 @@ selected_columns = [
     'HOUSEHOLDER_RACE'
 ]
 
-
 selected_data = RECS_DF[selected_columns].copy()  # copying avoid chained assignment
 
 # Converting columns to numeric
@@ -402,3 +401,8 @@ selected_data = pd.get_dummies(selected_data, columns=['PAYHELP'], prefix='PAYHE
 # Convert 'EDUCATION' to dummy variables
 selected_data = pd.get_dummies(selected_data, columns=['EDUCATION'], prefix='EDU', drop_first=True)
 
+# Convert 'HOUSEHOLDER_RACE' to dummy variables
+selected_data = pd.get_dummies(selected_data, columns=['HOUSEHOLDER_RACE'], prefix='RACE', drop_first=True)
+
+# Add a constant term for the intercept
+selected_data = sm.add_constant(selected_data)
