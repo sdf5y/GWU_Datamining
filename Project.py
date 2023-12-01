@@ -365,4 +365,29 @@ Despite this poor performance, we can gleam that lower education statuses correl
 '''
 #%%
 
+#%%
+'''
+Multilinear Regression
+
+'''
+
+import statsmodels.api as sm
+
+# Select relevant columns
+selected_columns = [
+    'COLDMA',
+    'MONEYPY',
+    'HHAGE',
+    'PAYHELP',
+    'NOACEL',
+    'NOHEATEL',
+    'EDUCATION',
+    'HOUSEHOLDER_RACE'
+]
+
+# Created a subset of the DataFrame with selected columns
+selected_data = RECS_DF[selected_columns].copy()  # Ensure a copy to avoid chained assignment
+
+# Converting columns to numeric
+selected_data = selected_data.apply(pd.to_numeric, errors='coerce')
 
