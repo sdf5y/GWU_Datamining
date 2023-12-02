@@ -471,11 +471,15 @@ print("Classification Report:")
 print(classification_rep_coldma)
 
 '''
-The confusion matrix shows that the model does not detect any positives. 
-Instead it has high scores in precision and recall for identifying negatives.
-
+The confusion matrix shows that the model does not detect any true positives. 
+Instead our model has high scores in precision and recall for identifying negatives. 
+The model is accurate in detecting our 3.6k true negatives, which increases the model acuracy. 
+However, our model does not detecting any true positive values, which showcase its failure. 
+In fact, our model over-fitted at a 99.4% accuracy so its inflating the false positives higher than actual true positives.
 '''
 
-# Splitting the dataset into training and testing sets for HOTMA
+# Split the dataset into training and testing for HOTMA
 X_train_hotma, X_test_hotma, y_train_hotma, y_test_hotma = train_test_split(X, y_hotma, test_size=0.2, random_state=42)
+
+logreg_model_hotma = LogisticRegression()
 
