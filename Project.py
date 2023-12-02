@@ -489,3 +489,9 @@ logreg_model_hotma.fit(X_train_hotma, y_train_hotma)
 # Making predictions on the test data for HOTMA
 y_pred_hotma = logreg_model_hotma.predict(X_test_hotma)
 
+# Evaluating the model for HOTMA
+accuracy_hotma = accuracy_score(y_test_hotma, y_pred_hotma)
+conf_matrix_hotma = confusion_matrix(y_test_hotma, y_pred_hotma)
+classification_rep_hotma = classification_report(y_test_hotma, y_pred_hotma)
+
+
