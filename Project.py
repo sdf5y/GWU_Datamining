@@ -475,3 +475,7 @@ The confusion matrix shows that the model does not detect any positives.
 Instead it has high scores in precision and recall for identifying negatives.
 
 '''
+
+# Splitting the dataset into training and testing sets for HOTMA
+X_train_hotma, X_test_hotma, y_train_hotma, y_test_hotma = train_test_split(X, y_hotma, test_size=0.2, random_state=42)
+
