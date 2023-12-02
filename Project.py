@@ -426,3 +426,17 @@ mortality risks from experiencing energy poverty.
 '''
 
 # %%
+'''
+Logistic regression - for HOTMA and COLDMA
+'''
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Assuming RECS_DF is your DataFrame
+# Selecting relevant columns
+selected_columns = ['EDUCATION', 'HOUSEHOLDER_RACE', 'NOACEL', 'MONEYPY', 'COLDMA', 'HOTMA']
+
+# Creating a new DataFrame with selected columns
+selected_data = RECS_DF[selected_columns]
