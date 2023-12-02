@@ -454,3 +454,7 @@ logreg_model_coldma = LogisticRegression()
 
 # Fitting the model on the training data for COLDMA
 logreg_model_coldma.fit(X_train_coldma, y_train_coldma)
+
+# Making predictions on the test data for COLDMA
+y_pred_coldma = logreg_model_coldma.predict(X_test_coldma)
+
