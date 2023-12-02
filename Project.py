@@ -434,9 +434,15 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
-# Assuming RECS_DF is your DataFrame
-# Selecting relevant columns
+# Selecting relevant columns and dropping NAs
 selected_columns = ['EDUCATION', 'HOUSEHOLDER_RACE', 'NOACEL', 'MONEYPY', 'COLDMA', 'HOTMA']
 
-# Creating a new DataFrame with selected columns
 selected_data = RECS_DF[selected_columns]
+
+selected_data = selected_data.dropna()
+
+# setting (X) and (y)
+X = selected_data.drop(['COLDMA', 'HOTMA'], axis=1)  
+y_coldma = selected_data['COLDMA']  
+y_hotma = selected_data['HOTMA']  
+
