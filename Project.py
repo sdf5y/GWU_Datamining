@@ -170,6 +170,7 @@ mapping = {1: 'Less than $5,000',
            16: '$150,000 or more'}
 
 RECs_dfs['MONEYPY'] = RECs_dfs['MONEYPY'].map(mapping)
+
 #%%
 """Figures and other Plots."""
 
@@ -193,6 +194,7 @@ plt.title("Income Level by Education")
 plt.xticks(rotation=30, ha='right')
 plt.legend(title="Education", labels= edu_order)
 plt.show()
+
 #%%
 #EMPLOYHH by MONEYPY
 
@@ -256,6 +258,7 @@ plt.title("Medical Attention Needed From Heat by Income")
 plt.xticks(rotation=30, ha='right')
 plt.legend(title="Medical Attention for Heat", labels= assistance_order )
 plt.show()
+
 #%%
 # Chi squared test for income braket and hotma and then coldma
 
@@ -288,6 +291,7 @@ print("Degrees of freedom:", dof)
 print("P-value:", p)
 
 """Predictable results where PAYHELP is significant with income levels. Nothing too insightful here."""
+
 #%%
 # Logistical Prediction
 # test accuracy with prediction score
@@ -494,4 +498,20 @@ accuracy_hotma = accuracy_score(y_test_hotma, y_pred_hotma)
 conf_matrix_hotma = confusion_matrix(y_test_hotma, y_pred_hotma)
 classification_rep_hotma = classification_report(y_test_hotma, y_pred_hotma)
 
+# Printing results for HOTMA
+print("\nResults for HOTMA:")
+print(f"Accuracy: {accuracy_hotma}")
+print("Confusion Matrix:")
+print(conf_matrix_hotma)
+print("Classification Report:")
+print(classification_rep_hotma)
 
+'''
+The confusion matrix for 'HOTMA' shows the same outcome as the confusion matrix for 'COLDMA'.
+The model does not detect any true positives. 
+Instead our model has high scores in precision and recall for identifying negatives. 
+It accurately detects our 3.6k true negatives, increasing the model acuracy. 
+However, since the model does not detecting any true positive values it fails in this aspect. 
+This model for 'HOTMA' like the model for 'COLDMA' is over-fitted and inflates the false positives 
+higher than actual true positives.
+'''
