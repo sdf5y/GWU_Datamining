@@ -446,3 +446,11 @@ X = selected_data.drop(['COLDMA', 'HOTMA'], axis=1)
 y_coldma = selected_data['COLDMA']  
 y_hotma = selected_data['HOTMA']  
 
+# Splitting the dataset into training and testing sets for COLDMA
+X_train_coldma, X_test_coldma, y_train_coldma, y_test_coldma = train_test_split(X, y_coldma, test_size=0.2, random_state=42)
+
+# Initializing the logistic regression model for COLDMA
+logreg_model_coldma = LogisticRegression()
+
+# Fitting the model on the training data for COLDMA
+logreg_model_coldma.fit(X_train_coldma, y_train_coldma)
