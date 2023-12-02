@@ -462,3 +462,16 @@ accuracy_coldma = accuracy_score(y_test_coldma, y_pred_coldma)
 conf_matrix_coldma = confusion_matrix(y_test_coldma, y_pred_coldma)
 classification_rep_coldma = classification_report(y_test_coldma, y_pred_coldma)
 
+# Printing results for COLDMA
+print("Results for COLDMA:")
+print(f"Accuracy: {accuracy_coldma}")
+print("Confusion Matrix:")
+print(conf_matrix_coldma)
+print("Classification Report:")
+print(classification_rep_coldma)
+
+'''
+The confusion matrix shows that the model does not detect any positives. 
+Instead it has high scores in precision and recall for identifying negatives.
+
+'''
