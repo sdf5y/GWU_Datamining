@@ -483,3 +483,9 @@ X_train_hotma, X_test_hotma, y_train_hotma, y_test_hotma = train_test_split(X, y
 
 logreg_model_hotma = LogisticRegression()
 
+# Fitting the model on the training data for HOTMA
+logreg_model_hotma.fit(X_train_hotma, y_train_hotma)
+
+# Making predictions on the test data for HOTMA
+y_pred_hotma = logreg_model_hotma.predict(X_test_hotma)
+
