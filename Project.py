@@ -532,3 +532,13 @@ selected_features_svm = [
     'NOACEL',
     'NOHEATEL'
 ]
+
+# Create a subset of the DataFrame with selected features for SVM
+selected_data_svm = RECS_DF[selected_features_svm]
+
+# Convert categorical variables to dummy variables
+selected_data_svm = pd.get_dummies(selected_data_svm, columns=['EMPLOYHH', 'TYPEHUQ'])
+
+# Drop rows with missing values
+selected_data_svm = selected_data_svm.dropna()
+
