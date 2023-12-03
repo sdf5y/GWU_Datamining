@@ -307,10 +307,11 @@ model = glm(formula='PAYHELP ~  HHAGE + C(MONEYPY) + C(HOTMA) + C(COLDMA) ', dat
 model_fit = model.fit()
 print(model_fit.summary())
 
-from sklearn.metrics import confusion_matrix
-confusion_matrix()
+from IPython.display import display, Latex
 
-RECs_dfs.columns
+latex_output = model_fit.summary2().as_latex()
+
+display(Latex(latex_output))
 # I'm getting an error here. there is a missing argument for 'y_true'
 # maybe needs to be y_true = data['PAYHELP'] and y_pred = model_fit.predict(data)?
 
