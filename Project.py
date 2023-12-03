@@ -544,11 +544,11 @@ selected_data_svm = pd.get_dummies(selected_data_svm, columns=['EMPLOYHH', 'TYPE
 # Drop rows with missing values
 selected_data_svm = selected_data_svm.dropna()
 
-# Define the features (X_svm) and target variable (y_svm) for SVM
-X_svm = selected_data_svm.drop(['PAYHELP'], axis=1)  # Features for SVM
-y_svm = selected_data_svm['PAYHELP']  # Target variable for SVM
+# set (X_svm) and (y_svm) 
+X_svm = selected_data_svm.drop(['PAYHELP'], axis=1)  
+y_svm = selected_data_svm['PAYHELP']  
 
-# Split the data into training and testing sets for SVM
+# Split the data into training and testing 
 X_train_svm, X_test_svm, y_train_svm, y_test_svm = train_test_split(X_svm, y_svm, test_size=0.2, random_state=42)
 
 # Standardize the features (important for SVM)
@@ -556,12 +556,27 @@ scaler_svm = StandardScaler()
 X_train_scaled_svm = scaler_svm.fit_transform(X_train_svm)
 X_test_scaled_svm = scaler_svm.transform(X_test_svm)
 
-# Initialize the SVM model
 svm_model = SVC(kernel='linear', C=1.0, random_state=42)
 
-# Train the model
+# Train the model and predict
 svm_model.fit(X_train_scaled_svm, y_train_svm)
 
-# Make predictions on the test set
 y_pred_svm = svm_model.predict(X_test_scaled_svm)
 
+# Evaluate the SVM model
+accuracy_svm = accuracy_score(y_test_svm, y_pred_svm)
+classification_rep_svm = classification_report(y_test_svm, y_pred_svm)
+
+print('SVM Results:')
+print(f'Accuracy: {accuracy_svm}')
+print('Classification Report:')
+print(classification_rep_svm)
+
+'''
+The model performs well for Class -2 with precision of 92%, recall of 100%, and an f1 score of 96%.
+The model is poorly performing for Classes 0 and 1. 
+It is likely that Class -2 influences the weighted average for precision, recall and f1-scores.
+Therefore, the macro average scores are more reflective of the imbalence vectors between 0, and 1 and -2 since it treats all vectors equally, 
+but this actually reduces the bias from Class -2.
+'''
+#%%
