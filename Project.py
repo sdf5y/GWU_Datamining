@@ -466,7 +466,7 @@ accuracy_coldma = accuracy_score(y_test_coldma, y_pred_coldma)
 conf_matrix_coldma = confusion_matrix(y_test_coldma, y_pred_coldma)
 classification_rep_coldma = classification_report(y_test_coldma, y_pred_coldma)
 
-# Printing results for COLDMA
+# COLDMA results
 print("Results for COLDMA:")
 print(f"Accuracy: {accuracy_coldma}")
 print("Confusion Matrix:")
@@ -498,7 +498,7 @@ accuracy_hotma = accuracy_score(y_test_hotma, y_pred_hotma)
 conf_matrix_hotma = confusion_matrix(y_test_hotma, y_pred_hotma)
 classification_rep_hotma = classification_report(y_test_hotma, y_pred_hotma)
 
-# Printing results for HOTMA
+# HOTMA results 
 print("\nResults for HOTMA:")
 print(f"Accuracy: {accuracy_hotma}")
 print("Confusion Matrix:")
@@ -515,3 +515,20 @@ However, since the model does not detecting any true positive values it fails in
 This model for 'HOTMA' like the model for 'COLDMA' is over-fitted and inflates the false positives 
 higher than actual true positives.
 '''
+#%%
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report
+
+# Selecting columns
+selected_features_svm = [
+    'MONEYPY',
+    'PAYHELP',
+    'EDUCATION',
+    'EMPLOYHH',
+    'TYPEHUQ',
+    'NOACEL',
+    'NOHEATEL'
+]
