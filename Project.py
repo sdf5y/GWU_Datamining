@@ -555,3 +555,13 @@ X_train_svm, X_test_svm, y_train_svm, y_test_svm = train_test_split(X_svm, y_svm
 scaler_svm = StandardScaler()
 X_train_scaled_svm = scaler_svm.fit_transform(X_train_svm)
 X_test_scaled_svm = scaler_svm.transform(X_test_svm)
+
+# Initialize the SVM model
+svm_model = SVC(kernel='linear', C=1.0, random_state=42)
+
+# Train the model
+svm_model.fit(X_train_scaled_svm, y_train_svm)
+
+# Make predictions on the test set
+y_pred_svm = svm_model.predict(X_test_scaled_svm)
+
