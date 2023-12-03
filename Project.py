@@ -516,7 +516,9 @@ This model for 'HOTMA' like the model for 'COLDMA' is over-fitted and inflates t
 higher than actual true positives.
 '''
 #%%
-
+'''
+SVM
+'''
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
@@ -542,3 +544,14 @@ selected_data_svm = pd.get_dummies(selected_data_svm, columns=['EMPLOYHH', 'TYPE
 # Drop rows with missing values
 selected_data_svm = selected_data_svm.dropna()
 
+# Define the features (X_svm) and target variable (y_svm) for SVM
+X_svm = selected_data_svm.drop(['PAYHELP'], axis=1)  # Features for SVM
+y_svm = selected_data_svm['PAYHELP']  # Target variable for SVM
+
+# Split the data into training and testing sets for SVM
+X_train_svm, X_test_svm, y_train_svm, y_test_svm = train_test_split(X_svm, y_svm, test_size=0.2, random_state=42)
+
+# Standardize the features (important for SVM)
+scaler_svm = StandardScaler()
+X_train_scaled_svm = scaler_svm.fit_transform(X_train_svm)
+X_test_scaled_svm = scaler_svm.transform(X_test_svm)
