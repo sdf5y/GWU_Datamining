@@ -582,6 +582,9 @@ but this actually reduces the bias from Class -2.
 '''
 
 #%%
+'''
+KNN-Payhelp
+'''
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
@@ -606,3 +609,17 @@ selected_data_knn = pd.get_dummies(selected_data_knn, columns=['EMPLOYHH', 'TYPE
 # Drop rows with missing values for KNN
 selected_data_knn = selected_data_knn.dropna()
 
+# Define the features (X_knn) and target variable (y_knn) for KNN
+X_knn = selected_data_knn.drop(['PAYHELP'], axis=1)  # Features for KNN
+y_knn = selected_data_knn['PAYHELP']  # Target variable for KNN
+
+# Split the data into training and testing sets for KNN
+X_train_knn, X_test_knn, y_train_knn, y_test_knn = train_test_split(X_knn, y_knn, test_size=0.2, random_state=42)
+
+# Standardize the features (important for KNN)
+scaler_knn = StandardScaler()
+X_train_scaled_knn = scaler_knn.fit_transform(X_train_knn)
+X_test_scaled_knn = scaler_knn.transform(X_test_knn)
+
+# Initialize the KNN model
+knn_model = KNeighborsClassifier(n_neighbors=5)
