@@ -580,4 +580,29 @@ It is likely that Class -2 influences the weighted average for precision, recall
 Therefore, the macro average scores are more reflective of the imbalence vectors between 0, and 1 and -2 since it treats all vectors equally, 
 but this actually reduces the bias from Class -2.
 '''
+
 #%%
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+# Select relevant columns for KNN
+selected_features_knn = [
+    'MONEYPY',
+    'EDUCATION',
+    'EMPLOYHH',
+    'TYPEHUQ',
+    'NOACEL',
+    'NOHEATEL'
+]
+
+# Create a subset of the DataFrame with selected features for KNN
+selected_data_knn = RECS_DF[selected_features_knn + ['PAYHELP']]
+
+# Convert categorical variables to dummy variables for KNN
+selected_data_knn = pd.get_dummies(selected_data_knn, columns=['EMPLOYHH', 'TYPEHUQ'])
+
+# Drop rows with missing values for KNN
+selected_data_knn = selected_data_knn.dropna()
+
