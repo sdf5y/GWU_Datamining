@@ -208,6 +208,7 @@ plt.legend(title="Employment Status")
 plt.show()
 
 RECs_dfs_filtered = RECs_dfs[RECs_dfs['COLDMA'].isin(['Yes', 'No'])]
+
 #%%
 #PLOT Income by Assisstance
 money_order = ['Less than $5,000', '$5,000 - $7,499', '$7,500 - $9,999', '$10,000 - $12,499', '$12,500 - $14,999',
@@ -631,3 +632,19 @@ y_pred_knn = knn_model.predict(X_test_scaled_knn)
 accuracy_knn = accuracy_score(y_test_knn, y_pred_knn)
 classification_rep_knn = classification_report(y_test_knn, y_pred_knn)
 
+# Print the KNN results
+print('KNN Results:')
+print(f'Accuracy: {accuracy_knn}')
+print('Classification Report:')
+print(classification_rep_knn)
+
+'''
+The KNeighbors Model for the 'PAYHELP' variable has an accuracy of 91.6%.
+In particular the model performs well for Class -2 but not very well for Class 1 and Class 0.
+Class -2 seems to have a strong influence on scores presented in the classification report.
+The weighted average score is one score that is heavily influenced by Class -2 while the 
+macro average score sees less influence.
+For a less biased overview of classification measures, the macro average score is better.
+'''
+
+# %%
