@@ -600,26 +600,34 @@ selected_features_knn = [
     'NOHEATEL'
 ]
 
-# Create a subset of the DataFrame with selected features for KNN
 selected_data_knn = RECS_DF[selected_features_knn + ['PAYHELP']]
 
-# Convert categorical variables to dummy variables for KNN
+# set dummies
 selected_data_knn = pd.get_dummies(selected_data_knn, columns=['EMPLOYHH', 'TYPEHUQ'])
 
-# Drop rows with missing values for KNN
 selected_data_knn = selected_data_knn.dropna()
 
-# Define the features (X_knn) and target variable (y_knn) for KNN
-X_knn = selected_data_knn.drop(['PAYHELP'], axis=1)  # Features for KNN
-y_knn = selected_data_knn['PAYHELP']  # Target variable for KNN
+# Setting y and x
+X_knn = selected_data_knn.drop(['PAYHELP'], axis=1)  
+y_knn = selected_data_knn['PAYHELP'] 
 
-# Split the data into training and testing sets for KNN
+# Split the data 
 X_train_knn, X_test_knn, y_train_knn, y_test_knn = train_test_split(X_knn, y_knn, test_size=0.2, random_state=42)
 
-# Standardize the features (important for KNN)
+# Standardize the Xs
 scaler_knn = StandardScaler()
 X_train_scaled_knn = scaler_knn.fit_transform(X_train_knn)
 X_test_scaled_knn = scaler_knn.transform(X_test_knn)
 
-# Initialize the KNN model
 knn_model = KNeighborsClassifier(n_neighbors=5)
+
+# Training
+knn_model.fit(X_train_scaled_knn, y_train_knn)
+
+# Test predictions
+y_pred_knn = knn_model.predict(X_test_scaled_knn)
+
+# Evaluates
+accuracy_knn = accuracy_score(y_test_knn, y_pred_knn)
+classification_rep_knn = classification_report(y_test_knn, y_pred_knn)
+
