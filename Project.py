@@ -648,3 +648,29 @@ For a less biased overview of classification measures, the macro average score i
 '''
 
 # %%
+'''
+KNN-Coldma Hotma
+'''
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+# Select relevant columns for KNN
+selected_features_knn = [
+    'MONEYPY',
+    'EDUCATION',
+    'EMPLOYHH',
+    'TYPEHUQ',
+    'NOACEL',
+    'NOHEATEL'
+]
+
+# Create a subset of the DataFrame with selected features for KNN
+selected_data_knn = RECS_DF[selected_features_knn + ['COLDMA', 'HOTMA']]
+
+# Convert categorical variables to dummy variables for KNN
+selected_data_knn = pd.get_dummies(selected_data_knn, columns=['EMPLOYHH', 'TYPEHUQ'])
+
+# Drop rows with missing values for KNN
+selected_data_knn = selected_data_knn.dropna()
