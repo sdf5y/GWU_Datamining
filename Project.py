@@ -674,3 +674,18 @@ selected_data_knn = pd.get_dummies(selected_data_knn, columns=['EMPLOYHH', 'TYPE
 
 # Drop rows with missing values for KNN
 selected_data_knn = selected_data_knn.dropna()
+
+# Define the features (X_knn) and target variables (y_coldma, y_hotma) for KNN
+X_knn = selected_data_knn.drop(['COLDMA', 'HOTMA'], axis=1)  # Features for KNN
+y_coldma = selected_data_knn['COLDMA']  # Target variable for COLDMA prediction
+y_hotma = selected_data_knn['HOTMA']  # Target variable for HOTMA prediction
+
+# Split the data into training and testing sets for KNN
+X_train_knn, X_test_knn, y_train_coldma, y_test_coldma = train_test_split(X_knn, y_coldma, test_size=0.2, random_state=42)
+_, _, y_train_hotma, y_test_hotma = train_test_split(X_knn, y_hotma, test_size=0.2, random_state=42)
+
+# Standardize the features (important for KNN)
+scaler_knn = StandardScaler()
+X_train_scaled_knn = scaler_knn.fit_transform(X_train_knn)
+X_test_scaled_knn = scaler_knn.transform(X_test_knn)
+
