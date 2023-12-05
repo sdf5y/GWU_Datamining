@@ -688,3 +688,25 @@ knn_model_hotma.fit(X_train_scaled_knn, y_train_hotma)
 # test predictions
 y_pred_coldma = knn_model_coldma.predict(X_test_scaled_knn)
 y_pred_hotma = knn_model_hotma.predict(X_test_scaled_knn)
+
+# Evaluate the KNN models for COLDMA and HOTMA
+accuracy_coldma = accuracy_score(y_test_coldma, y_pred_coldma)
+classification_rep_coldma = classification_report(y_test_coldma, y_pred_coldma)
+
+accuracy_hotma = accuracy_score(y_test_hotma, y_pred_hotma)
+classification_rep_hotma = classification_report(y_test_hotma, y_pred_hotma)
+
+# Print the KNN results for COLDMA
+print('KNN Results for COLDMA:')
+print(f'Accuracy: {accuracy_coldma}')
+print('Classification Report:')
+print(classification_rep_coldma)
+
+# Print the KNN results for HOTMA
+print('\nKNN Results for HOTMA:')
+print(f'Accuracy: {accuracy_hotma}')
+print('Classification Report:')
+print(classification_rep_hotma)
+'''
+The KNeighbors Model for the Coldma and Hotma individually
+'''
