@@ -710,3 +710,18 @@ print(classification_rep_hotma)
 '''
 The KNeighbors Model for the Coldma and Hotma individually
 '''
+#%%
+
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+selected_columns = [
+    'TYPEHUQ', 'INTERNET', 'HHSEX', 'HHAGE', 'EMPLOYHH', 'EDUCATION', 'HOUSEHOLDER_RACE',
+    'MONEYPY', 'PAYHELP', 'COLDMA', 'HOTMA', 'NOACEL', 'NOHEATEL'
+]
+
+selected_data = RECS_DF[selected_columns]
+
+# Convert to dummies
+selected_data = pd.get_dummies(selected_data, columns=['TYPEHUQ', 'EMPLOYHH', 'EDUCATION', 'HOUSEHOLDER_RACE'], drop_first=True)
