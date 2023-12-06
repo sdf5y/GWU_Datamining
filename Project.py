@@ -711,6 +711,9 @@ print(classification_rep_hotma)
 The KNeighbors Model for the Coldma and Hotma individually
 '''
 #%%
+'''
+Gradient Boosting 
+'''
 
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
@@ -725,3 +728,25 @@ selected_data = RECS_DF[selected_columns]
 
 # Convert to dummies
 selected_data = pd.get_dummies(selected_data, columns=['TYPEHUQ', 'EMPLOYHH', 'EDUCATION', 'HOUSEHOLDER_RACE'], drop_first=True)
+
+# Drop rows with missing values
+selected_data = selected_data.dropna()
+
+# Split data into features (X) and target variables (y)
+X = selected_data.drop(['COLDMA', 'HOTMA'], axis=1)
+y_cold = selected_data['COLDMA']
+y_hot = selected_data['HOTMA']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train_cold, y_test_cold, y_train_hot, y_test_hot = train_test_split(
+    X, y_cold, y_hot, test_size=0.2, random_state=42
+)
+
+# Initialize Gradient Boosting models
+cold_model = GradientBoostingClassifier(n_estimators=100, random_state=42)
+hot_model = GradientBoostingClassifier(n_estimators=100, random_state=42)
+
+# Train the models
+cold_model.fit(X_train, y_train_cold)
+hot_model.fit(X_train, y_train_hot)
+
