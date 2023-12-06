@@ -509,6 +509,7 @@ However, since the model does not detecting any true positive values it fails in
 This model for 'HOTMA' like the model for 'COLDMA' is over-fitted and inflates the false positives 
 higher than actual true positives.
 '''
+
 #%%
 '''
 SVM
@@ -710,6 +711,7 @@ print(classification_rep_hotma)
 '''
 The KNeighbors Model for the Coldma and Hotma individually
 '''
+
 #%%
 '''
 Gradient Boosting 
@@ -749,4 +751,29 @@ hot_model = GradientBoostingClassifier(n_estimators=100, random_state=42)
 # Train the models
 cold_model.fit(X_train, y_train_cold)
 hot_model.fit(X_train, y_train_hot)
+
+# Make predictions
+cold_predictions = cold_model.predict(X_test)
+hot_predictions = hot_model.predict(X_test)
+
+# Evaluate model performance
+cold_accuracy = accuracy_score(y_test_cold, cold_predictions)
+hot_accuracy = accuracy_score(y_test_hot, hot_predictions)
+
+print("Cold Model Accuracy:", cold_accuracy)
+print("Hot Model Accuracy:", hot_accuracy)
+
+# Additional evaluation metrics
+print("\nCold Model Classification Report:")
+print(classification_report(y_test_cold, cold_predictions))
+
+print("\nHot Model Classification Report:")
+print(classification_report(y_test_hot, hot_predictions))
+
+'''
+Both the Cold Model and Hot Model accurately predict negative outcomes more than positive outcomes.
+This pulls on the weighted averages and shows both models are overfitted.
+The macro average scores for both model is a better representation of the model values compared to the
+weighted average scores.
+'''
 
