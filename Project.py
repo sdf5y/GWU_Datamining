@@ -814,3 +814,23 @@ hot_model.fit(X_train, y_train_hot)
 cold_predictions = cold_model.predict(X_test)
 hot_predictions = hot_model.predict(X_test)
 
+# Evaluate model performance
+cold_accuracy = accuracy_score(y_test_cold, cold_predictions)
+hot_accuracy = accuracy_score(y_test_hot, hot_predictions)
+
+print("Cold Model Accuracy:", cold_accuracy)
+print("Hot Model Accuracy:", hot_accuracy)
+
+# Additional evaluation metrics
+print("\nCold Model Classification Report:")
+print(classification_report(y_test_cold, cold_predictions))
+
+print("\nHot Model Classification Report:")
+print(classification_report(y_test_hot, hot_predictions))
+
+'''
+Both the Cold Model and Hot Model accurately predict negative outcomes more accurately than positive outcomes.
+This pulls on the weighted averages of the Gradient Boosting classifier and shows both models are overfitted.
+The macro average scores for both model is again a better representation of the model values compared to the
+weighted average scores.
+'''
