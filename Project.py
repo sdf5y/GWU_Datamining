@@ -709,7 +709,10 @@ print(f'Accuracy: {accuracy_hotma}')
 print('Classification Report:')
 print(classification_rep_hotma)
 '''
-The KNeighbors Model for the Coldma and Hotma individually
+The KNN models for COLDMA and HOTMA variables both exhibit high accuracy of 99.46%. 
+However, the models perform well only for Class 0, with precision and recall of 99% and 100%, respectively. 
+For Class 1, the precision, recall, and F1-score are all 0%, indicating the model struggles to predict this class. 
+The high accuracy is primarily driven by correct predictions for Class 0, while Class 1 predictions are ineffective.
 '''
 
 #%%
