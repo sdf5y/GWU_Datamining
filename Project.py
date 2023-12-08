@@ -782,20 +782,35 @@ weighted average scores.
 Gradient Boosting - ONLY USING : employ,money and type of house
 
 '''
-
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
-# Select relevant columns
 selected_columns = ['EMPLOYHH', 'MONEYPY', 'TYPEHUQ', 'COLDMA', 'HOTMA']
 
-# Create a subset of the DataFrame with selected columns
 selected_data = RECS_DF[selected_columns]
 
-# Convert categorical variables to dummy variables
+# Convert to dummies
 selected_data = pd.get_dummies(selected_data, columns=['TYPEHUQ'], drop_first=True)
 
-# Drop rows with missing values
 selected_data = selected_data.dropna()
+
+# Split data into X and Y
+X = selected_data.drop(['COLDMA', 'HOTMA'], axis=1)
+y_cold = selected_data['COLDMA']
+y_hot = selected_data['HOTMA']
+
+# Splitting into training and testing
+X_train, X_test, y_train_cold, y_test_cold, y_train_hot, y_test_hot = train_test_split(
+    X, y_cold, y_hot, test_size=0.2, random_state=42
+)
+
+cold_model = GradientBoostingClassifier(n_estimators=100, random_state=42)
+hot_model = GradientBoostingClassifier(n_estimators=100, random_state=42)
+
+cold_model.fit(X_train, y_train_cold)
+hot_model.fit(X_train, y_train_hot)
+
+cold_predictions = cold_model.predict(X_test)
+hot_predictions = hot_model.predict(X_test)
 
