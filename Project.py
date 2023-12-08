@@ -309,9 +309,9 @@ display(Latex(latex_output))
 # maybe needs to be y_true = data['PAYHELP'] and y_pred = model_fit.predict(data)?
 
 #%%
+
 '''
 Linear Regression of Income level by attributes of education and cold medical assistance.
-
 '''
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
