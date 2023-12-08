@@ -777,3 +777,25 @@ The macro average scores for both model is a better representation of the model 
 weighted average scores.
 '''
 
+#%%
+'''
+Gradient Boosting - ONLY USING : employ,money and type of house
+
+'''
+
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+# Select relevant columns
+selected_columns = ['EMPLOYHH', 'MONEYPY', 'TYPEHUQ', 'COLDMA', 'HOTMA']
+
+# Create a subset of the DataFrame with selected columns
+selected_data = RECS_DF[selected_columns]
+
+# Convert categorical variables to dummy variables
+selected_data = pd.get_dummies(selected_data, columns=['TYPEHUQ'], drop_first=True)
+
+# Drop rows with missing values
+selected_data = selected_data.dropna()
+
