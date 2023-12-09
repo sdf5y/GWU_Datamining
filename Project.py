@@ -180,7 +180,7 @@ edu_order = ['Less than high school diploma or GED',
              'Master’s, Professional, or Doctoral degree']
 
 plt.figure(figsize=(12, 6))
-sns.countplot(data=RECs_dfs, x ="MONEYPY", hue='EDUCATION',  palette="Set2", order = money_order, hue_order = edu_order)
+sns.countplot(data=RECs_dfs, x ="MONEYPY",  palette="Set2", hue='EDUCATION', hue_order = edu_order, order = money_order)
 plt.xlabel("Income Level")
 plt.ylabel("Count")
 plt.title("Income Level by Education")
@@ -391,7 +391,7 @@ selected_data = selected_data.dropna()
 print("Shape after dropping missing values:", selected_data.shape)
 
 # Convert 'PAYHELP' to categorical
-selected_data['PAYHELP'] = pd.Categorical(selected_data['PAYHELP'], categories=[-2, 0, 1])
+selected_data['PAYHELP'] = pd.Categorical(selected_data['PAYHELP'], categories=[0, 1])
 
 # Convert 'PAYHELP' to dummy 
 selected_data = pd.get_dummies(selected_data, columns=['PAYHELP'], prefix='PAYHELP', drop_first=True)
@@ -539,6 +539,7 @@ selected_data_svm = pd.get_dummies(selected_data_svm, columns=['EMPLOYHH', 'TYPE
 
 # Drop rows with missing values
 selected_data_svm = selected_data_svm.dropna()
+selected_data_svm = selected_data_svm[selected_data_svm['PAYHELP'] != -2]
 
 # set (X_svm) and (y_svm) 
 X_svm = selected_data_svm.drop(['PAYHELP'], axis=1)  
@@ -599,7 +600,7 @@ selected_data_knn = RECS_DF[selected_features_knn + ['PAYHELP']]
 
 # set dummies
 selected_data_knn = pd.get_dummies(selected_data_knn, columns=['EMPLOYHH', 'TYPEHUQ'])
-
+selected_data_knn = selected_data_knn[selected_data_knn['PAYHELP'] != -2]
 selected_data_knn = selected_data_knn.dropna()
 
 # Setting y and x
@@ -737,6 +738,7 @@ selected_data = pd.get_dummies(selected_data, columns=['TYPEHUQ', 'EMPLOYHH', 'E
 
 # Drop rows with missing values
 selected_data = selected_data.dropna()
+selected_data = selected_data[selected_data['PAYHELP'] != -2]
 
 # Split data into features (X) and target variables (y)
 X = selected_data.drop(['COLDMA', 'HOTMA'], axis=1)
