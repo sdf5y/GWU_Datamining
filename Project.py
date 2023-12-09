@@ -17,7 +17,7 @@ os.chdir("C:\\Users\\18045\\Documents\\Python\\datamining\\Project") #Sean's Dir
 #os.chdir() #Sreya's directory
 RECS_DF = pd.read_csv("recs2020_public_v5.csv")
 code_book = pd.read_excel('RECS 2020 Codebook for Public File - v5.xlsx')
-'''
+
 #Pulling the columns of interest. 
 
 data_df = RECS_DF.iloc[:,:9]
@@ -29,7 +29,7 @@ if all(col_name in RECS_DF.columns for col_name in column_names_list):
     data = RECS_DF[column_names_list]
     
 RECs_dfs = pd.concat([data_df, data], axis=1)
-'''
+
 #%%
 
 #import data (smaller sized csv of our key attributes only - see github for the code I used)
@@ -39,7 +39,7 @@ RECs_dfs = pd.read_csv("RECsample_df.csv")
 '''
 Initial corr plot
 '''
-sample_df_corr = RECs_dfs.iloc[:,9:]
+sample_df_corr = RECs_dfs.iloc[:,9:].dropna()
 sns.heatmap(sample_df_corr.corr(), annot=True, cmap="coolwarm", fmt=".2f")
 
 """Based on our corr plot is looks like:
@@ -56,13 +56,14 @@ are *relativley* negatively correlated.
 """
 
 data_rf = sample_df_corr.drop('UATYP10', axis =1)
+data_rf = data_rf[data_rf['PAYHELP'] != -2]
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 y = data_rf ['PAYHELP']
-X = data_rf .drop('PAYHELP', axis=1)
+X = data_rf.drop('PAYHELP', axis=1)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=5)
 
