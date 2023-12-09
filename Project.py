@@ -39,7 +39,7 @@ RECs_dfs = pd.read_csv("RECsample_df.csv")
 '''
 Initial corr plot
 '''
-sample_df_corr = RECs_dfs.iloc[:,9:].dropna()
+sample_df_corr = RECs_dfs.iloc[:,10:].dropna()
 sns.heatmap(sample_df_corr.corr(), annot=True, cmap="coolwarm", fmt=".2f")
 
 """Based on our corr plot is looks like:
@@ -54,8 +54,8 @@ It also looks like:
   MONEYPY and PAYHELP,
 are *relativley* negatively correlated.
 """
-
-data_rf = sample_df_corr.drop('UATYP10', axis =1)
+#%%
+data_rf = sample_df_corr  #.drop('UATYP10', axis =1)
 data_rf = data_rf[data_rf['PAYHELP'] != -2]
 
 from sklearn.ensemble import RandomForestClassifier
@@ -293,6 +293,7 @@ print("P-value:", p)
 
 import statsmodels.api as sm
 from statsmodels.formula.api import glm
+from IPython.display import display, Latex
 
 data = RECs_dfs
 data = data[data['PAYHELP'] != 'NA']
@@ -301,13 +302,9 @@ model = glm(formula='PAYHELP ~  HHAGE + C(MONEYPY) + C(HOTMA) + C(COLDMA) ', dat
 model_fit = model.fit()
 print(model_fit.summary())
 
-from IPython.display import display, Latex
-
 latex_output = model_fit.summary2().as_latex()
-
 display(Latex(latex_output))
-# I'm getting an error here. there is a missing argument for 'y_true'
-# maybe needs to be y_true = data['PAYHELP'] and y_pred = model_fit.predict(data)?
+
 
 #%%
 
@@ -390,13 +387,11 @@ selected_data = selected_data.dropna()
 
 print("Shape after dropping missing values:", selected_data.shape)
 
-# Convert 'PAYHELP' to categorical
+# Convert categorical 
 selected_data['PAYHELP'] = pd.Categorical(selected_data['PAYHELP'], categories=[0, 1])
 
-# Convert 'PAYHELP' to dummy 
+#convert to dummies
 selected_data = pd.get_dummies(selected_data, columns=['PAYHELP'], prefix='PAYHELP', drop_first=True)
-
-# Convert 'EDUCATION' to dummy
 selected_data = pd.get_dummies(selected_data, columns=['EDUCATION'], prefix='EDU', drop_first=True)
 
 # dependent variable 
@@ -412,6 +407,8 @@ model = sm.OLS(y.astype(float), X.astype(float)).fit()
 
 # Print the regression results
 print(model.summary())
+latex_output = model.summary().as_latex()
+display(Latex(latex_output))
 
 '''
 Running a multilinear regression the X variables explains 3.6% of the variation in the COLDMA variable.
@@ -419,12 +416,12 @@ Compared to the Linear Regression conducted previously this model is better.
 However, the r-squared value 3.6% is still very small.
 Nonetheless, the multilinear model shows when people seek medical attention when the home is too cold. 
 they are also unable to use other temperature systems like AC and heating equipment.
-Some people who sought medical attention because the home was too cold also recieved assistance to pay
+Some people who sought medical attention because the home was too cold also received assistance to pay
 energy bills. This finding is concerning as it indicates welfare assistance may not do enough to reduce
 mortality risks from experiencing energy poverty.
 '''
 
-# %%
+#%%
 '''
 Logistic regression - for HOTMA and COLDMA
 '''
@@ -477,6 +474,7 @@ However, our model does not detecting any true positive values, which showcase i
 In fact, our model over-fitted at a 99.4% accuracy so its inflating the false positives higher than actual true positives.
 '''
 
+#%%
 # Split the dataset into training and testing for HOTMA
 X_train_hotma, X_test_hotma, y_train_hotma, y_test_hotma = train_test_split(X, y_hotma, test_size=0.2, random_state=42)
 
@@ -505,9 +503,9 @@ print(classification_rep_hotma)
 The confusion matrix for 'HOTMA' shows the same outcome as the confusion matrix for 'COLDMA'.
 The model does not detect any true positives. 
 Instead our model has high scores in precision and recall for identifying negatives. 
-It accurately detects our 3.6k true negatives, increasing the model acuracy. 
+It accurately detects our 3.6k true negatives, increasing the model accuracy. 
 However, since the model does not detecting any true positive values it fails in this aspect. 
-This model for 'HOTMA' like the model for 'COLDMA' is over-fitted and inflates the false positives 
+This model for 'HOTMA' like the model for 'COLDMA' is over-fitted and it inflates the false positives 
 higher than actual true positives.
 '''
 
@@ -570,11 +568,9 @@ print('Classification Report:')
 print(classification_rep_svm)
 
 '''
-The model performs well for Class -2 with precision of 92%, recall of 100%, and an f1 score of 96%.
-The model is poorly performing for Classes 0 and 1. 
-It is likely that Class -2 influences the weighted average for precision, recall and f1-scores.
-Therefore, the macro average scores are more reflective of the imbalence vectors between 0, and 1 and -2 since it treats all vectors equally, 
-but this actually reduces the bias from Class -2.
+The model performs well for predicting Class 0, with high detection of negatives of PAYHELP status. 
+But even with the support vector, it is unable to classify Class 1, 
+or true positives, which informs us that there is not enough Class 1 responses in the dataset to infer meaningful predictions.
 '''
 
 #%%
@@ -634,15 +630,12 @@ print('Classification Report:')
 print(classification_rep_knn)
 
 '''
-The KNeighbors Model for the 'PAYHELP' variable has an accuracy of 91.6%.
-In particular the model performs well for Class -2 but not very well for Class 1 and Class 0.
-Class -2 seems to have a strong influence on scores presented in the classification report.
-The weighted average score is one score that is heavily influenced by Class -2 while the 
-macro average score sees less influence.
-For a less biased overview of classification measures, the macro average score is better.
+The KNN Model for the 'PAYHELP' variable has an accuracy of 73%.
+In particular the model performs well for Class 0 in all 4 evaluation metrics.
+KNN provides higher results than the other models for detecting false positives, but not for false negatives.
+It does not perform well in detecting false positives and false negatives.
 '''
-
-# %%
+#%%
 '''
 KNN-Coldma Hotma
 '''
