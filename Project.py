@@ -252,6 +252,34 @@ plt.title("Medical Attention Needed From Heat by Income")
 plt.xticks(rotation=30, ha='right')
 plt.legend(title="Medical Attention for Heat", labels= assistance_order )
 plt.show()
+
+# %%
+# %%
+# Plotting HOTMA and COLDMA with income in side-by-side countplots
+fig, ax = plt.subplots(1,2, figsize=(12, 6))
+
+sns.countplot(data=RECs_dfs, x="MONEYPY", y=None, hue='HOTMA', order=money_order, hue_order=assistance_order, ax=ax[0], palette='rocket', alpha=0.7)
+
+sns.countplot(data=RECs_dfs, x="MONEYPY", y=None, hue='COLDMA', order=money_order, hue_order=assistance_order, ax=ax[1], palette='mako', alpha=0.7)
+
+fig.suptitle("Medical Attention Needed From Cold and Heat by Income", fontsize=16)
+ax[0].set_xlabel("Income Level")
+ax[0].set_label("Count")
+ax[1].set_xlabel("Income Level")
+ax[1].set_label("Count")
+
+ax[0].set_xticklabels(ax[0].get_xticklabels(), rotation=30, ha='right')
+ax[1].set_xticklabels(ax[1].get_xticklabels(), rotation=30, ha='right')
+
+ax[0].set_ylim(0, 23)
+ax[1].set_ylim(0, 23)
+
+ax[0].legend(title="Medical Attention", labels=['Hot'], loc='upper right')
+ax[1].legend(title="Medical Attention", labels=['Cold'], loc='upper right')
+
+plt.show()
+
+
 #%%
 from IPython.display import display, Latex
 
