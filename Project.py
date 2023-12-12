@@ -784,7 +784,6 @@ weighted average scores.
 #%%
 '''
 Gradient Boosting - ONLY USING : employ,money and type of house
-
 '''
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
