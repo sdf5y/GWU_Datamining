@@ -252,6 +252,11 @@ plt.title("Medical Attention Needed From Heat by Income")
 plt.xticks(rotation=30, ha='right')
 plt.legend(title="Medical Attention for Heat", labels= assistance_order )
 plt.show()
+#%%
+from IPython.display import display, Latex
+
+latex_output = round(data.describe(), 2).to_latex()
+display(Latex(latex_output))
 
 #%%
 # Chi squared test for income braket and hotma and then coldma
